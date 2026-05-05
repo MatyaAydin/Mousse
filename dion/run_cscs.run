@@ -10,7 +10,7 @@
 #SBATCH --output=result_%j.out      # Standard output file (%j expands to jobID)
 #SBATCH --error=error_%j.err
 
-cd /iopsstor/scratch/cscs/maydin/scion/Mousse/dion
+cd /iopsstor/scratch/cscs/maydin/Mousse/dion
 
 pip install -r ./requirements_train.txt
 

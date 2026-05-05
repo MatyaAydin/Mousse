@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --job-name=train_modded_gpt_optuna
+#SBATCH --time=1:30:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=288
+#SBATCH --environment=vllm2026-container
+#SBATCH --account=a0114
+#SBATCH --gpus-per-node=4
+#SBATCH --output=result_%j.out      # Standard output file (%j expands to jobID)
+#SBATCH --error=error_%j.err
+
+cd /iopsstor/scratch/cscs/maydin/scion/mousse/dion
+
+pip install -r ./requirements_train.txt
+
+
+torchrun --standalone --nproc_per_node=4 ./train.py --config ./configs/mousse_160m.yaml

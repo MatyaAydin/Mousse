@@ -9,7 +9,6 @@ from torch.distributed.tensor import DeviceMesh, DTensor
 from torch.optim.optimizer import Optimizer, ParamsT
 from typing import Callable, Generator, List, Optional, Tuple, Union, Dict
 
-from .newton_schulz_triton import newton_schulz_triton
 from .opt_utils import (
     AsyncRuntime,
     AsyncTask,
@@ -43,7 +42,6 @@ class Mousse(Optimizer):
         flatten: Whether to flatten 3D+ tensors to 2D for Muon updates.
             True: Tensors with 3+ dimensions are flattened to 2D. Use this for convolutional layers.
             False: Tensors are not flattened. 3D+ tensors are treated as batches of 2D matrices.
-        use_triton: Whether to use Triton kernel for Newton-Schulz. Ignored if custom function is provided.
         newton_schulz_func: Use a custom Newton-Schulz function for orthogonalization.
             Signature is `func(input: Tensor, epsilon: float) -> Tensor`.
         shampoo_epsilon: The damping factor applied during spectral decomposition, making sure all eigenvalues 
@@ -73,7 +71,6 @@ class Mousse(Optimizer):
         nesterov: bool = False,
         adjust_lr: Optional[str] = "spectral_norm",
         flatten: bool = False,
-        use_triton: bool = False,
         newton_schulz_func: Optional[Callable] = None,
         shampoo_epsilon: float = 1e-10,
         shampoo_beta: float = 0.95,
@@ -150,8 +147,6 @@ class Mousse(Optimizer):
                     f"newton_schulz_func must be a callable function, got {type(newton_schulz_func)}"
                 )
             self._newton_schulz_func = newton_schulz_func
-        elif use_triton:
-            self._newton_schulz_func = newton_schulz_triton
         else:
             self._newton_schulz_func = zeropower_via_newtonschulz5
 

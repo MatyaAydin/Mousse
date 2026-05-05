@@ -28,19 +28,18 @@ from dion import DionSimple
 from dion import Muon
 from dion import MuonReference
 from dion import Mousse
-from soap.SOAP.soap import SOAP
 
 
 @dataclass
 class Hyperparameters:
     # Data directory
-    data_dir: str = "data/fineweb10B"
+    data_dir: str = "/iopsstor/scratch/cscs/maydin/scion/examples/modded-nanogpt/data/fineweb10B"
 
     # Training config
     batch_size: int = 8 * 64  # global batch size (across devices)
     device_batch_size: int = 64  # per-device batch size
     sequence_length: int = 1024  # tokens per sequence
-    num_iterations: int = 5000
+    num_iterations: int = 5100
     warmup_ratio: float = 0.01
     warmdown_ratio: float = 0.2
 
@@ -506,11 +505,6 @@ def init_optimizer(
             apply_norm=hp.shampoo_norm,
             use_LorR=hp.use_LorR,
             optimizer_debug=hp.optimizer_debug
-        )
-    elif hp.optimizer == "soap":
-        opt = SOAP(
-            param_groups,
-            lr=hp.lr,
         )
     else:
         raise ValueError(f"Unsupported optimizer: {hp.optimizer}")

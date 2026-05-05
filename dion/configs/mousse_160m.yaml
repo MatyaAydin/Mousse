@@ -7,7 +7,7 @@ sequence_length: 1024
 # — Batching & Training —
 batch_size: 512
 device_batch_size: 64
-num_iterations: 5100
+num_iterations: 7500
 
 # — Learning‐rate schedule —
 warmup_ratio: 0.1

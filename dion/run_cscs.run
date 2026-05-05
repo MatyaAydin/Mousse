@@ -15,4 +15,4 @@ cd /iopsstor/scratch/cscs/maydin/Mousse/dion
 pip install -r ./requirements_train.txt
 
 
-torchrun --standalone --nproc_per_node=4 ./train.py --config ./configs/mousse_160m.yaml
+torchrun --standalone --nproc_per_node=4 ./train.py --config ./configs/mousse_160m.yaml --no_wandb

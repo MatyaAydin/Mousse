@@ -205,9 +205,6 @@ def parse_cli_args():
     parser.add_argument(
         "--no_compile", action="store_true", help="Disable torch.compile for model"
     )
-    parser.add_argument(
-        "--no_triton", action="store_true", help="Disable Triton kernels"
-    )
 
     cli_args = parser.parse_args()
     if cli_args.config:
@@ -228,7 +225,6 @@ def parse_cli_args():
             "fast_fsdp",
             "no_wandb",
             "no_compile",
-            "no_triton",
             "debug",
         ):
             if yaml_cfg.get(flag, False):
@@ -424,7 +420,6 @@ def init_optimizer(
             distributed_mesh = ddp_model.process_group  # using ProcessGroup for DDP
             comm_method = "all-gather"
         print0(f"Muon LR adjust method: {hp.adjust_lr}")
-        print0(f"Triton Newton-Schulz kernels: {not cli_args.no_triton}")
         print0(f"Distributed Muon using: {comm_method}")
         opt = Muon(
             param_groups,
@@ -434,7 +429,6 @@ def init_optimizer(
             weight_decay=hp.weight_decay,
             nesterov=True,
             adjust_lr=hp.adjust_lr,
-            use_triton=(not cli_args.no_triton),
         )
 
     elif hp.optimizer == "dion_simple":
@@ -485,7 +479,6 @@ def init_optimizer(
             distributed_mesh = ddp_model.process_group  # using ProcessGroup for DDP
             comm_method = "all-gather"
         print0(f"Mousse LR adjust method: {hp.adjust_lr}")
-        print0(f"Triton Newton-Schulz kernels: {not cli_args.no_triton}")
         print0(f"Distributed Mousse using: {comm_method}")
         opt = Mousse(
             param_groups,
@@ -496,7 +489,6 @@ def init_optimizer(
             weight_decay=hp.weight_decay,
             nesterov=False,
             adjust_lr=hp.adjust_lr,
-            use_triton=(not cli_args.no_triton),
             shampoo_epsilon=float(hp.shampoo_epsilon),
             shampoo_update_freq=int(hp.shampoo_update_freq),
             shampoo_alpha=float(hp.shampoo_alpha),

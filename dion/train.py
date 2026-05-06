@@ -84,7 +84,7 @@ class Hyperparameters:
     optimizer_debug: bool = False
 
     # LR Scheduler
-    scheduler_type: str = "cosine"
+    scheduler_type: str = "wsd"
 
 # Helper function to only print on global rank 0
 MASTER_PROCESS = True

@@ -11,7 +11,7 @@ num_iterations: 5100
 
 # — Learning‐rate schedule —
 warmup_ratio: 0.1
-warmdown_ratio: 0.1
+warmdown_ratio: 0.3
 
 # — Optimizer & Hyperparameters —
 mu: 0.95

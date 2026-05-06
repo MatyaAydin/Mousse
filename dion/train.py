@@ -795,6 +795,8 @@ def main():
         decay_ratio = max(0.0, min(1.0, decay_ratio))
 
         return 0.5 * (1.0 + math.cos(math.pi * decay_ratio))
+    
+    print(f"SCHEDULER TYPE {hp.scheduler_type}")
 
     if hp.scheduler_type == "cosine":
         lr_scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, get_lr_cosine)
